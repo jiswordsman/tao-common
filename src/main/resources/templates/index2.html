@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>第一个Vue.js应用</title>
+    <script src="https://cdn.bootcss.com/vue/2.3.0/vue.js"></script>
+</head>
+<body>
+<!--由于Vue不能直接作用于Html或body上，因此我们需要保留一个div供Vue使用-->
+<!--这个div最终会被template中的代码替换掉-->
+<div id="app"></div>
+<script>
+    var app = new Vue({
+        el:"#app",
+        data:{
+            name:"yongjun"
+        },
+        //使用template属性，注意：这段HTML必须只有一个根标签
+        template:   `
+                        <div>
+                            <input type="text" v-model="name">
+                            <div>
+                                你好，{{name}}<br>
+                                {{1 + 1}}<br>
+                                {{3>2?"3大于2":"3不大于2"}}
+                            </div>
+                        </div>
+                        `
+    });
+</script>
+</body>
+</html>

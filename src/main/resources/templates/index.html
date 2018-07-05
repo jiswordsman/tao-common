@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>第一个Vue.js应用</title>
+    <script src="https://cdn.bootcss.com/vue/2.3.0/vue.js"></script>
+</head>
+<body>
+<div id="app" :style="style">
+    <!--v-model来将输入框里的内容绑定给变量name-->
+    <input type="text" v-model="name">
+    <div>
+        <!--字符串模板，用于在页面上直接显示变量内容-->
+        你好，{{name}}<br>
+        <!--字符串模板中的内容是Vue.js表达式（包含JS表达式）-->
+        {{1 + 1}}<br>
+        {{3>2?"3大于2":"3不大于2"}}
+        <h2>展示数组中的数据</h2>
+        <p>语法：
+            &lt;标签 v-for="引用 in 数组"&gt;&lbrace; &lbrace; 引用 &rbrace;&rbrace;&lt;/标签&gt;<br/>
+            &lt;标签 v-for="引用 in 数组"&gt;&lbrace; &lbrace; 引用.属性 &rbrace;&rbrace;&lt;/标签&gt;
+        </p>
+        <ul>
+            <li v-for="i in numbers">{{i}}</li>
+        </ul>
+        <h2>展示对象的数组</h2>
+        <table border="1px">
+            <tr>
+                <td>序号</td>
+                <td>用户名</td>
+                <td>年龄</td>
+            </tr>
+            <!--如果想要获取当前遍历的下标，需要像这样加入第二个参数-->
+            <tr v-for="(u,i) in users">
+                <td>{{i+1}}</td>
+                <td>{{u.name}}</td>
+                <td>{{u.age}}</td>
+                <td>{{u.gender}}</td>
+            </tr>
+        </table>
+        <h2>根据条件展示</h2>
+        <!--两种方式比较
+        动态创建DOM的效率比修改标签显示方式的效率低很多。
+        动态创建DOM的方式能避免极个别情况下的样式错误或逻辑错误。-->
+        <!--根据表达式的结果，决定是否动态创建这个DOM元素： v-if-else if-else 。-->
+        <div v-if="test ==0">0</div>
+        <div v-else-if="test==1">1</div>
+        <div v-else>2</div>
+        <!--根据表达式的结果，决定是否显示这个标签： v-show 。-->
+        <div v-show="test2==1">1</div>
+        <div v-show="test2==2">2</div>
+        <div v-show="test2==3">3</div>
+        
+        <h2>属性绑定</h2>
+        <!--使用 :属性名 的方式绑定。（推荐）-->
+        <!--使用 v-bind:属性名 的方式绑定。-->
+        <!--<img :src="image">-->
+        
+        <h2>事件绑定</h2>
+        <button type="button" @click="btn_click(123)">点我</button>
+        <button type="button" v-on:click="btn_click(123)">点我</button>
+
+        <h2>:class</h2>
+        <p>:class 可以使用扩展的Vue.js表达式来更加智能的动态控制标签样式。包括 单值语法 、 数组语法 和 对象语法。</p>
+        <!--:class="border: hidden; background-color: red"-->
+        <!--这个还不知道怎么用-->
+        <input type="button" :class="value">
+        <input type="text" v-model="name"/>
+        <input type="password" v-model="password"/>
+        <br/>
+        
+        <input type="radio" v-model="r" value="m">男
+        <input type="radio" v-model="r" value="f">女
+        <br/>
+        
+        <input type="checkbox" v-model="cs" value="bk">篮球
+        <input type="checkbox" v-model="cs" value="fb">足球
+        <input type="checkbox" v-model="cs" value="pp">乒乓球
+        <br/>
+        
+        <select v-model="s1">
+            <option>A</option>
+            <option>B</option>
+            <option>C</option>
+        </select>
+        <span>{{s1}}</span>
+        <br/>
+        <select v-model="s2">
+            <option value="aa">AA</option>
+            <option value="bb">BB</option>
+            <option value="cc">CC</option>
+        </select>
+        <span>{{s2}}</span>
+        <br/>
+        
+        {{price1 | price}} <br/>
+        {{price2 | price("$")}} <br/>
+        {{price3 | price("￥",4)}} <br/>
+        <!--{{price("￥",4)}} <br/>-->
+    </div>
+</div>
+<script>
+    "use strict";
+    var app = new Vue({
+        //指定Vue对象的作用范围，可以为任意CSS选择器，但只能选择一个，一般用ID选择器即可
+        //注意，不能是html或者body
+        el:"#app",
+        methods:{
+          btn_click:function (num) {
+              alert(num);
+          }  
+        },
+        //指定需要进行双向绑定的动态数据，和AngularJS不同，需要先声明，后使用
+        data:{
+            numbers:[1,2,4,6,2],
+            users:[
+                {name:"lins",age:24},
+                {name:"suns",age:18},
+                {name:"zhang3",age:17}
+            ],
+            test:2,
+            test2:3,
+            image:"/logo.png",
+//            style:"background-image: url('/football.png')",
+            value:"value='我是一个按钮1'",
+            name:"张三112123123",
+            password:"我是张三",
+            r:"m",
+            cs:["fb","pp"],
+            s1:"B",
+            s2:"cc",
+            price1:100,
+            price2:100.1254,
+            price3:100.456897
+        },
+        filters:{
+            //过滤器名字:过滤器实现函数(原始数据，所需参数1,...){
+            //    return 处理完的数据;
+            //}
+            price:function (text,prefix,count) {
+                prefix = prefix || "￥";
+                if (count == 0) {
+                    count = 0;
+                } else {
+                    count = count || 2;
+                }
+                text = parseFloat(text).toFixed(count);
+                text = prefix + text;
+                return text;
+            }
+        }
+        
+    });
+    Vue.set(app.numbers, 3, 8);
+    Vue.set(app.users, "gender", true);
+</script>
+</body>
+</html>
