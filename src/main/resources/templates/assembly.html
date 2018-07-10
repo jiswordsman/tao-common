@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue组件学习</title>
+    <script src="/js/jquery-3.3.1.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.3.0/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <input type="text" v-model="test">
+    <my-component :tran="test"></my-component>
+</div>
+<script>
+
+    // 定义组件
+    var myTemplate = {
+        // Vue组件必须只有唯一的根标签，即下面这个div不能有兄弟节点
+        template: '<div>{{tran}}</div>',
+        props:["tran"],
+        methods: {
+            btn_click: function (n) {
+                console.log(n);
+            }
+        }
+    }
+    Vue.component("my-component", myTemplate);
+    var app = new Vue({
+        el: "#app",
+        data:{
+            test:""
+        }
+    });
+</script>
+</body>
+</html>

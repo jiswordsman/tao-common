@@ -1,7 +1,5 @@
 package com.jiyongjun.tao.common.controller;
 
-import com.alibaba.fastjson.JSONObject;
-import com.jiyongjun.tao.common.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,12 +17,20 @@ public class HomeController {
     public String index() {
         return "index";
     }
-    
+
     @GetMapping("/index3")
     public String index3() {
         return "index3";
     }
-    
+
+    @GetMapping("/assembly")
+    public String assembly() {
+        return "assembly";
+    }
+    @GetMapping("/assembly2")
+    public String assembly2() {
+        return "assembly2";
+    }
     @RequestMapping("/")
     @ResponseBody
     public String home() {

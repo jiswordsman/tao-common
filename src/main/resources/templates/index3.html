@@ -1,10 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="/js/jquery-3.3.1.js"></script>
     <script src="https://cdn.bootcss.com/vue/2.3.0/vue.js"></script>
+    <style type="text/css">
+        #my-component span{
+            border: 1px solid #000;
+            color: #666;
+        }
+        #my-component.red_style span{
+            border: 1px solid #f00;
+            color: #f66;
+        }
+        #my-component.blue_style span{
+            border: 1px solid #00f;
+            color: #66f;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
@@ -15,22 +29,75 @@
         <input type="radio" name="user.gender" v-model="user.gender" value="female"/>女<br/>
         <button @click="submit">提交</button>
         <br/>
-        <input type="text" v-model="responseData.name">
+        <input type="text" v-model="responseData.username">
+        <input type="text" v-model="responseData.password">
+        <br/>
+        选择主题：
+        <select v-model="theme">
+            <option value="red_style">红色</option>
+            <option value="blue_style">蓝色</option>
+        </select>
+        <my-component :theme="theme"></my-component>
     </div>
 
 <script>
+    // 定义组件
+    var myTemplate = {
+        // Vue组件必须只有唯一的根标签，即下面这个div不能有兄弟节点
+        // template:'<div>{{mess}}<button @click="btn_click(456)">点我</button></div>',
+        template:'<div id="my-component" :class="theme">' +
+        '<span>我是一个组件</span>' +
+        '</div>',
+        props:["theme"],
+        data: function () {
+            return {
+                mess: "我是一个组件",
+            }
+        },
+        methods: {
+            btn_click: function (n) {
+                alert("真点啊???");
+            }
+        }
+    }
     var app = new Vue({
         el:"#app",
+        components:{
+            // "标签名":组件对象
+            "my-component":myTemplate
+        },
         data:{
-            user:{},
+            i:0,
+            theme:"blue_style",
+            user:{
+                username: "xuser",
+                password: "1234"
+            },
             responseData:{}
         },
         methods:{
             submit:function () {
-                $.get("http://localhost/user/save",this.user,function (data) {
+                $.post("/user/save",this.user,function (data) {
                     this.responseData = data;
                 }.bind(this),"json");
             }
+        },
+        // 声明周期回调函数，内部写法类似事件回调
+        // 发生在 0 赋值给 i 之前
+        beforeCreate(){
+            console.log("beforeCreate赋值前", this.i);
+            this.i = 2;
+            console.log("beforeCreate赋值后", this.i);
+        },
+        // 发生在 0 赋值给 i 之后
+        created() {
+            console.log("created 赋值前", this.i);
+            this.i = 3;
+            console.log("created 赋值后", this.i);
+            // 重要应用：初始化数据
+            $.get("/user/get", function (data) {
+                this.responseData = data;
+            }.bind(this),"json");
         }
     });
 </script>

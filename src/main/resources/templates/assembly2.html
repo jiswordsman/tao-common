@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue组件学习</title>
+    <script src="/js/jquery-3.3.1.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.3.0/vue.js"></script>
+</head>
+<body>
+<script>
+    var myTemplate = {
+        template: "<div>我是子组件中的输入框："
+        + "<input v-model='c_mess' @input='tran_to_f()'>"
+        + "</div>",
+        data: function () {
+            return {
+                c_mess: ""
+            }
+        },
+        methods: {
+            tran_to_f: function () {
+                this.$emit("tran", this.c_mess);
+            }
+        }
+    }
+</script>
+<div id="app">
+    父组件：{{f_mess}}
+    <my-component @tran="c_to_f"></my-component>
+</div>
+<script>
+    "use strict"
+    Vue.component("my-component", myTemplate);
+    var app = new Vue({
+        el: "#app",
+        data: {
+            f_mess: ""
+        },
+        methods: {
+            c_to_f: function (data) {
+                this.f_mess = data;
+            }
+        }
+    });
+</script>
+</body>
+</html>
