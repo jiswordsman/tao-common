@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>基本路由</title>
+    <script src="https://cdn.bootcss.com/vue/2.3.0/vue.js"></script>
+    <script src="https://cdn.bootcss.com/vue-router/2.7.0/vue-router.js"></script>
+</head>
+<body>
+<div id="app">
+    <router-link to="/animals">动物园</router-link>
+    <router-link to="/animals/lion/shizi" tag="div">狮子</router-link>
+    <router-link to="/animals/cat/mao" tag="button">猫</router-link>
+
+    <!--第一级路径对应的组件会应用到这里-->
+    <router-view></router-view>
+</div>
+<script>
+    var tempZoo = {
+        template: "<div>这里是动物园<br> " +
+        "<!--第二级路径对应的组件会应用到这里--> " +
+        "<router-view></router-view> " +
+        "</div>"
+    };
+    var tempLion = {
+        template: '<div><span>{{$route.params.name}}</span><img src="/lion.jpg"></div>'
+    };
+    var tempCat = {
+        template: '<div><span>{{$route.params.name}}</span><img src="/cat.jpg"></div>'
+    };
+    var myRouter = new VueRouter({
+        routes: [
+            {
+                path: "/animals", component: tempZoo,
+                //子层路由规则配置，不能配置默认跳转
+                children: [
+                    //path地址不能以/开头
+                    {path: "lion/:name", component: tempLion},
+                    {path: "cat/:name", component: tempCat}
+                ]
+            },
+            {path: "/*", redirect: "/animals"}
+        ],
+        // // 部分匹配时class
+        // linkActiveClass:"active",
+        // // 绝对匹配时class
+        // linkExactActiveClass:"exact_active"
+    });
+    var main = new Vue({
+        el: "#app",
+        router: myRouter
+    });
+    //不携带参数
+    myRouter.push("/animals/cat");
+</script>
+</body>
+</html>

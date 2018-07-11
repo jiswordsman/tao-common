@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue组件学习</title>
+    <script src="/js/jquery-3.3.1.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.3.0/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <h1>非父子组件间通信</h1>
+    <my-component1></my-component1>
+    <my-component2></my-component2>
+</div>
+<script>
+    "use strict"
+    //定义通信总线
+    var bus = new Vue();
+
+    var myTemplate1 = {
+        template: "<button type='button' @click='sendMessage()'>组件1中的按钮</button>",
+        methods: {
+            sendMessage: function () {
+                //通过通信总线发射一个事件，携带想要传递的数据
+                bus.$emit("message1", "aaabbb");
+            }
+        }
+    }
+    var myTemplate2 = {
+        template: "<div>组件二：{{message}}</div>",
+        data: function () {
+            return {
+                message: ""
+            }
+        },
+        created() {
+            //在所有想要获得这个数据的组件的created回调中，监听通信总线上的事件，拿到数据
+            bus.$on("message1", function (m) {
+                this.message = m;
+            }.bind(this))
+        }
+    }
+
+    Vue.component("my-component1", myTemplate1);
+    Vue.component("my-component2", myTemplate2);
+    var app = new Vue({
+        el: "#app"
+    });
+</script>
+</body>
+</html>

@@ -2,6 +2,8 @@ package com.jiyongjun.tao.common.model;
 
 import lombok.ToString;
 
+import java.io.Serializable;
+
 /**
  * description:
  *
@@ -9,7 +11,7 @@ import lombok.ToString;
  * @date 2018/7/2 17:40
  */
 @ToString
-public class User {
+public class User implements Serializable {
     private String username;
     private String password;
     private String gender;

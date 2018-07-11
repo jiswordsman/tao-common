@@ -8,8 +8,9 @@
 </head>
 <body>
 <div id="app">
-    <input type="text" v-model="test">
-    <my-component :tran="test"></my-component>
+    <h1>父组件向子组件传递数据</h1>
+    父组件：<input type="text" v-model="test"><br/>
+    子组件：<my-component :tran="test"></my-component>
 </div>
 <script>
 

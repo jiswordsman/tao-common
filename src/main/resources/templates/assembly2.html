@@ -9,12 +9,12 @@
 <body>
 <script>
     var myTemplate = {
-        template: "<div>我是子组件中的输入框："
+        template: "<div>子组件："
         + "<input v-model='c_mess' @input='tran_to_f()'>"
         + "</div>",
         data: function () {
             return {
-                c_mess: ""
+                c_mess: "123"
             }
         },
         methods: {
@@ -25,6 +25,7 @@
     }
 </script>
 <div id="app">
+    <h1>子组件向父组件传递数据</h1>
     父组件：{{f_mess}}
     <my-component @tran="c_to_f"></my-component>
 </div>

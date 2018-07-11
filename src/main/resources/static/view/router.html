@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>基本路由</title>
+    <script src="https://cdn.bootcss.com/vue/2.3.0/vue.js"></script>
+    <script src="https://cdn.bootcss.com/vue-router/2.7.0/vue-router.js"></script>
+</head>
+<body>
+<div id="app">
+    <router-link to="/r1">路由1</router-link>
+    <router-link to="/r2">路由2</router-link>
+
+    <!--路径对应的组件会被应用到这里-->
+    <router-view></router-view>
+</div>
+<script>
+    var myTemplate1 = {
+        template:`<div>这是路由1</div>`
+    };
+    var myTemplate2 = {
+        template:`<div>这是路由2</div>`
+    }
+    var myRouter = new VueRouter({
+        //配置路由规则
+        routes:[
+            {path:"/r1",component:myTemplate1},
+            {path:"/r2",component:myTemplate2},
+            //默认跳转
+            {path:"/*",redirect:"/r1"}
+        ]
+    });
+    var main = new Vue({
+        el:"#app",
+        router:myRouter
+    });
+</script>
+</body>
+</html>

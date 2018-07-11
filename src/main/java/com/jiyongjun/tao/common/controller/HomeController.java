@@ -20,6 +20,11 @@ public class HomeController {
 
     @GetMapping("/index3")
     public String index3() {
+        //language=MySQL
+        String json = "select * from t_user";
+        if (json != null) {
+            
+        }
         return "index3";
     }
 

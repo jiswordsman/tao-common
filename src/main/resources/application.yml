@@ -1,0 +1,9 @@
+server:
+  port: 80
+spring:
+  mvc:
+    view:
+      suffix: .html
+  thymeleaf:
+    cache: false
+#debug: true
